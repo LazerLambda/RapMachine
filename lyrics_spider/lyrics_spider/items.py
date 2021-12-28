@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Item container class for LyricsSpider."""
 
 # Define here the models for your scraped items
@@ -11,5 +13,6 @@ import scrapy
 class LyricsSpiderItem(scrapy.Item):
     """Class to init data structure for storing."""
 
+    url = scrapy.Field()  # TODO: only in dev
     title = scrapy.Field()
     lyrics = scrapy.Field()

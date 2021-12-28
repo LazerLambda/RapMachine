@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Module to process incoming data."""
 
 # Define your item pipelines here
@@ -8,6 +10,7 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+import scrapy
 import json
 
 
@@ -39,4 +42,4 @@ class LyricsSpiderPipeline:
         json_object = json.dumps(data)
 
         with open(file_name, "a") as output_file:
-            output_file.write(json_object)
+            output_file.write("\n" + json_object)
