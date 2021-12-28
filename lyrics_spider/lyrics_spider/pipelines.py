@@ -17,6 +17,10 @@ import json
 class LyricsSpiderPipeline:
     """Pipeline Class for LyricsSpider."""
 
+    def __init__(self):
+        # TODO: Init database
+        pass
+
     def process_item(self, item: scrapy.Item, spider: scrapy.Spider):
         """Pipeline function to process incoming data and store it.
 
@@ -25,6 +29,7 @@ class LyricsSpiderPipeline:
             spider (scrapy.Spider): the spider which scraped the item
         """
         # TODO: clean data
+
 
         # Write to json
         self.convert_to_json(ItemAdapter(item).asdict(), 'rap.json')

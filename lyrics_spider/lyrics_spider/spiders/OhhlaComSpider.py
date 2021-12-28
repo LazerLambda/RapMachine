@@ -4,6 +4,7 @@
 
 import logging
 import scrapy
+import re
 
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
@@ -52,12 +53,26 @@ class OhhlaComSpider(CrawlSpider):
         """
         # grab the HTML where the lyrics are stored on the website
         lyrics = response.css('pre::text').get()
+        title = None
+        if lyrics is not None:
+            song = re.search(r"(Song:\s+)(.*?)\n", lyrics)
+            if bool(song):
+                title = song.group(2)
+
+                lyricx_tmp = re.search(r"((t|T)yped (b|B)y:\s+)(.*?)(\n+)(.*)", lyrics, re. DOTALL)
+                if bool(lyricx_tmp):
+                    lyrics = lyricx_tmp.group(6)
+                else:
+                    from_song = re.search(r"(Song:\s+)(.*?)(\n+)(.*)", lyrics, re. DOTALL)
+                    lyrics = from_song.group(4) if bool(from_song) is not None else lyrics
+
+            # lyrics = lyrics.splitlines()
 
         item = LyricsSpiderItem()
 
         # TODO: Find title
         item['url'] = response.request.url
-        item['title'] = None
+        item['title'] = title
         item['lyrics'] = lyrics
 
         yield item
