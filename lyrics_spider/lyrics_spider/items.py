@@ -7,6 +7,6 @@ import scrapy
 
 
 class LyricsSpiderItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    """Class to init data structure for storing."""
+    title = scrapy.Field()
+    lyrics = scrapy.Field()
