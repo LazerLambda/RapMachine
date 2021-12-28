@@ -23,6 +23,12 @@ class BattlerapComSpider(CrawlSpider):
     name = 'lyrics_crawler'
     allowed_domains = ['battlerap.com']
     start_urls = ['http://battlerap.com/lyrics/']
+    
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'lyrics_spider.pipelines.LyricsSpiderPipeline': 300
+        }
+    }
 
     #NOTE: hardcoded with tags from websites
     #TODO: add more lyrics websites to crawler (e.g. Genius)
@@ -51,7 +57,6 @@ class BattlerapComSpider(CrawlSpider):
         with open(file_name, "a") as output_file:
             output_file.write(json_object)
     ##-----------------------------------------------------------
-
 
     def parse_battlerap(self, response: scrapy.http.response.html.HtmlResponse) -> None:
         """Parse battlerap lyrics from battlerap.com website.
@@ -82,6 +87,8 @@ class OhhlaComSpider(CrawlSpider):
     name = 'ohhla_crawler'
     allowed_domains = ['ohhla.com']
     start_urls = ['http://www.ohhla.com/all.html']
+
+
 
     #NOTE: hardcoded with tags from websites
     #TODO: add more lyrics websites to crawler (e.g. Genius)
