@@ -5,3 +5,5 @@ __pycache__/*
 *.cpython-38.pyc
 *.log
 *.json
+*.zip
+*.secret
