@@ -30,6 +30,10 @@ class LyricsSpiderPipeline:
         """
         # TODO: clean data
 
+        if item["lyrics"] is None:
+            del item
+            raise scrapy.exceptions.DropItem()
+
 
         # Write to json
         self.convert_to_json(ItemAdapter(item).asdict(), 'rap.json')
