@@ -1,0 +1,6 @@
+[submodule "GeniusLyrics"]
+	path = GeniusLyrics
+	url = https://github.com/LazerLambda/GeniusLyrics
+[submodule "GetRankings"]
+	path = GetRankings
+	url = https://github.com/LazerLambda/GetRankings
