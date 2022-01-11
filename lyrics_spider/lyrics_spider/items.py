@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+
+"""Item container class for LyricsSpider."""
+
 # Define here the models for your scraped items
 #
 # See documentation in:
@@ -7,6 +11,8 @@ import scrapy
 
 
 class LyricsSpiderItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    """Class to init data structure for storing."""
+
+    url = scrapy.Field()  # TODO: only in dev
+    title = scrapy.Field()
+    lyrics = scrapy.Field()
