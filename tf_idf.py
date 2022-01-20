@@ -64,12 +64,27 @@ class KeywordExtractor(object):
     return clean_corpus
 
 
+  def convert_to_nouns(self, corpus):
+    filtered_by_nouns = []
+    for text in corpus:
+      doc = self.spacy_nlp(text)
+      nouns_list = [
+                    token.text
+                    for token in doc
+                    if token.pos_ == "NOUN"
+      ]
+      if len(nouns_list) > 0:
+        filtered_by_nouns.append(" ".join(nouns_list))
+      
+    return filtered_by_nouns
+
+
   def extract_keywords(self, corpus, document, top_n):
 
     tfidf_vectorizer = TfidfVectorizer()
     word_count_matrix = tfidf_vectorizer.fit_transform(corpus)
     feature_array = np.array(tfidf_vectorizer.get_feature_names_out())
-    doc = tfidf_vectorizer.transform([document])
+    doc = tfidf_vectorizer.transform(document)
     tfidf_sorting = np.argsort(doc.toarray()).flatten()[::-1]
     keywords = feature_array[tfidf_sorting][:top_n]
   
@@ -80,6 +95,8 @@ if __name__ == "__main__":
   keyword_extractor = KeywordExtractor("path_to_json_file")
   data = keyword_extractor.prepare_corpus()
   clean_data = keyword_extractor.replace_non_alnum(data)
-  test_doc = keyword_extractor.lemmatize_document("document_string")
-  keywords = keyword_extractor.extract_keywords(clean_data, test_doc, 5)
+  nouns = keyword_extractor.convert_to_nouns(clean_data)
+  doc = keyword_extractor.lemmatize_document("document_string")
+  doc_nouns = keyword_extractor.convert_to_nouns([doc])
+  keywords = keyword_extractor.extract_keywords(nouns, doc, 5)
   print(keywords)
