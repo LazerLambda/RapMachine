@@ -55,7 +55,7 @@ class RapMachine:
             num_beams: int = 2,
             top_k: int = 100,
             top_p: float = 0.95,
-            do_sample: bool = True,
+            do_sample: bool = False,
             repetition_penalty: float = 2.5,
             length_penalty: float = 1.0,
             early_stopping: bool = True,
@@ -64,9 +64,22 @@ class RapMachine:
         """Generate Samples.
 
         # TODO Documentation
-        Params
-        ------
-        # TODO
+        Args
+            keywords (list): list of tokens from which a
+                rap is to be generated
+            amount (int): number determining how many
+                candidates will be generated
+            max_length (int): maximal length for candidates
+            min_length (int): minimal length for candidates
+            num_beams (int): length of beam when using beam search
+            top_k (int): top k tokens used in top-k sampling
+                (https://arxiv.org/pdf/1904.09751.pdf)
+            top_p (float): in [0,1], determining the probability
+                mass for top p tokens
+            do_sample (bool): deactivate top-k and sample
+                from distribution
+            repetition_penalty (float): 
+            # TODO
 
         Returns
         -------
