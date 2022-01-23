@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
 
+"""Script for executing the keyword extractor."""
+
+
 import os
 from tf_idf import KeywordExtractor
 

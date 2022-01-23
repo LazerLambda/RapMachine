@@ -2,7 +2,7 @@
 
 
 
-"""Script for keyword extraction with the TF-IDF algorithm."""
+"""Script for building a keyword extractor model with the TF-IDF algorithm."""
 
 
 import json
@@ -190,11 +190,12 @@ class KeywordExtractor(object):
     feature_array = np.array(tfidf_vectorizer.get_feature_names_out())
     raw_document = self.lemmatize_document(document)
     document_nouns = self.convert_to_nouns([raw_document])
-    doc = tfidf_vectorizer.transform(document_nouns)
-    tfidf_sorting = np.argsort(doc.toarray()).flatten()[::-1]
-    keywords = feature_array[tfidf_sorting][:top_n]
+    if len(document_nouns) > 0:
+      doc = tfidf_vectorizer.transform(document_nouns)
+      tfidf_sorting = np.argsort(doc.toarray()).flatten()[::-1]
+      keywords = feature_array[tfidf_sorting][:top_n]
   
-    return list(keywords)
+      return list(keywords)
 
   def create_dataframe(self, tfidf_model):
     """Extract keywords with TFIDF model and save them to JSON with pandas
