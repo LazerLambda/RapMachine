@@ -2,3 +2,5 @@ langid
 numpy
 sklearn
 spacy
+tweepy
+python-dotenv
