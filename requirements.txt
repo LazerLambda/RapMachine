@@ -6,7 +6,7 @@ langid
 numpy
 pandas
 nltk
-scrapy
+Scrapy==2.5.1
 sklearn
 spacy
 tweepy
