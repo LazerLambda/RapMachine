@@ -78,7 +78,10 @@ def queuer(q_q_w, q_w_q):
             if 'text' not in data.keys():
                 return super().on_data(raw_data)
             else:
-                user, text, tweet_id = data['user']['screen_name'], data['text'], data['id']
+                user, text, tweet_id = (
+                    data['user']['screen_name'],
+                    data['text'],
+                    data['id'])
 
                 text = re.sub(r'(\s*@RapMachine7\s*)', '', text)
                 logging.info(
@@ -93,7 +96,7 @@ def queuer(q_q_w, q_w_q):
                 global WORKER
                 if WORKER:
                     WORKER = False
-                    q_q_w.put((user, text,tweet_id))
+                    q_q_w.put((user, text, tweet_id))
 
                 else:
                     if not q_w_q.empty():
@@ -151,7 +154,7 @@ def worker(q_q_w, q_w_q):
                 MODEL_STR)
             rmb.load()
             logging.info('load backend')
-            input_str: str = '@' + user + " " + text 
+            input_str: str = '@' + user + " " + text
             generated = rmb.generate(
                 input_str, 4)
 

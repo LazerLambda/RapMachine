@@ -1,8 +1,12 @@
 transformers
 datasets
+fasttext
 torch
 langid
 numpy
+pandas
+nltk
+Scrapy==2.5.1
 sklearn
 spacy
 tweepy
