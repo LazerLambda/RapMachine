@@ -10,7 +10,7 @@ Authors:
 
 2022
 """
-from .RapMachineBackendBase import RapMachineBase as RMB
+from RapMachineBackendBase import RapMachineBase as RMB
 
 import datetime
 import os
@@ -36,6 +36,7 @@ class RapMachineT5(RMB):
                 self.model_path)
 
     def working_msg(self, user: str) -> str:
+        """Return message to show current activity."""
         cr_time: str = str(datetime.datetime.now().time())
         return self.WORKING % (user, str(cr_time[0:5]))
 
@@ -51,18 +52,18 @@ class RapMachineT5(RMB):
             do_sample: bool = False,
             repetition_penalty: float = 2.5,
             length_penalty: float = 1.0,
-            early_stopping: bool = True,
-            skip_special_tokens: bool = True,
-            clean_up_tokenization_spaces: bool = True) -> list:
+            early_stopping: bool = True) -> list:
         """Generate Samples.
 
-        # TODO Documentation
-        Args
+        Generate sentences based on a specific input using the
+        above specified models.
+
+        Args:
             keywords (list): list of tokens from which a
                 rap is to be generated
             amount (int): number determining how many
                 candidates will be generated
-            max_length (int): maximal length for candidates
+            max_length (int): maximum length for candidates
             min_length (int): minimal length for candidates
             num_beams (int): length of beam when using beam search
             top_k (int): top k tokens used in top-k sampling
@@ -71,12 +72,18 @@ class RapMachineT5(RMB):
                 mass for top p tokens
             do_sample (bool): deactivate top-k and sample
                 from distribution
-            repetition_penalty (float): 
-            # TODO
+            repetition_penalty (float): The parameter for repetition
+                penalty. 1.0 means no penalty.
+                (https://arxiv.org/pdf/1909.05858.pdf)
+            length_penalty (float): Exponential penalty to the
+                length. 1.0 means no penalty. Set to values < 1.0
+                in order to encourage the model to generate shorter
+                sequences, to a value > 1.0 in order to encourage
+                the model to produce longer sequences.
+                (https://huggingface.co/docs/transformers/main_classes/model)
 
-        Returns
-        -------
-        # TODO
+        Returns:
+            list including of 'amound' raps
         """
         # set up gpu usage
         gpu: bool = True if torch.cuda.is_available() else False
@@ -113,8 +120,8 @@ class RapMachineT5(RMB):
             preds: list = [
                 self.tokenizer.decode(
                     g,
-                    skip_special_tokens=skip_special_tokens,
-                    clean_up_tokenization_spaces=clean_up_tokenization_spaces,
+                    skip_special_tokens=True,
+                    clean_up_tokenization_spaces=True,
                 )
                 for g in generated_ids
             ][0]

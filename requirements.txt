@@ -3,6 +3,7 @@ datasets
 torch
 langid
 numpy
+nltk
 sklearn
 spacy
 tweepy

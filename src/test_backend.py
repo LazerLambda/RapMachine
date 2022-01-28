@@ -2,17 +2,16 @@
 
 
 
-# from src import RapMachineBackendT5
+# import RapMachineBackendT5
 
 # rm = RapMachineBackendT5.RapMachineT5(
-#     '/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-1', 'OffWords.txt')
+#     '/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-2-large', 'OffWords.txt')
 
 # rm.load()
 # generated = rm.generate(
 #     ['compton', 'luck', 'gangsta', 'car', 'police', 'apple'], 4)
-# print(generated)
-# ranked = rm.rank(generated[0])
-# censored = rm.censor(ranked)
+# ranked = rm.rank(generated)
+# censored = list(map(lambda sent: rm.censor(sent), ranked))
 # print(censored)
 
 
@@ -27,5 +26,3 @@ generated = rm.generate(
 ranked = rm.rank(generated)
 censored = list(map(lambda sent: rm.censor(sent), ranked))
 print(censored)
-for i in censored:
-    print(len(i))
