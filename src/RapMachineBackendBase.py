@@ -1,4 +1,4 @@
-"""Main Class for RapMachine.
+"""Base Class for RapMachine.
 
 Artificial Creativity
 CIS - LMU Munich
@@ -13,6 +13,7 @@ Authors:
 
 import datetime
 import os
+import re
 import time
 import torch
 import transformers
@@ -20,7 +21,7 @@ import transformers
 ERROR: str = "ERROR:\n\t-> %s."
 
 
-class RapMachine:
+class RapMachineBase:
     """Rap Machine Class."""
 
     model: any = None
@@ -29,7 +30,8 @@ class RapMachine:
 
     def __init__(
             self,
-            model_path: str):
+            model_path: str,
+            slurlist_path: str):
         """Initialize Class."""
         assert isinstance(model_path, str),\
             ERROR % "'model_path' must be a string"
@@ -39,23 +41,17 @@ class RapMachine:
         self.model_path: str = model_path
 
         self.generator: transformers.Pipeline = None
-        # TODO update to argument
-        self.slur_list: list = self.load_slur_list("OffWords.txt")
+
+        self.slur_list: list = self.load_slur_list(slurlist_path)
         self.slur_dict: dict = self.build_slur_dict(self.slur_list)
         pass
 
     def load(self, **args) -> None:
         """Load Model and Tokenizer."""
-        self.tokenizer: transformers.T5TokenizerFast =\
-            transformers.T5TokenizerFast.from_pretrained(
-                self.model_path)
-        self.model: transformers.T5ForConditionalGeneration =\
-            transformers.T5ForConditionalGeneration.from_pretrained(
-                self.model_path)
+        raise NotImplementedError()
 
     def working_msg(self, user: str) -> str:
-        cr_time: str = str(datetime.datetime.now().time())
-        return self.WORKING % (user, str(cr_time[0:5]))
+        raise NotImplementedError()
 
 
     @staticmethod
@@ -112,12 +108,14 @@ class RapMachine:
         """
         # replace offensive words in string with values from dictionary
         # while splitting the string at non alphanumeric tokens
+        assert isinstance(input_str, str),\
+            ERROR % f"Input to 'censored_data' must be of type str but is of type {type(input_str)}"
         censored_song = ''.join(slur_dict.get(word.lower(), word) for word in re.split('(\W+)', input_str))
         return censored_song
 
     def generate(
             self,
-            keywords: list,
+            input_data: any,
             amount: int,
             max_length: int = 512,
             min_length: int = 0,
@@ -154,52 +152,11 @@ class RapMachine:
         -------
         # TODO
         """
-        # set up gpu usage
-        gpu: bool = True if torch.cuda.is_available() else False
-        if gpu:
-            torch.device("cuda")
-        else:
-            device = torch.device("cpu")
-
-        keywords_str: str = " ".join(map(str, keywords))
-
-        candidates: list = []
-        for i in range(amount):
-            # tokenize
-            input_ids: torch.Tensor = self.tokenizer.encode(
-                keywords_str,
-                return_tensors="pt",
-                add_special_tokens=True
-            ).to(device)
-
-            # generate
-            generated_ids: torch.Tensor = self.model.generate(
-                input_ids=input_ids,
-                num_beams=num_beams,
-                max_length=max_length,
-                min_length=min_length,
-                repetition_penalty=repetition_penalty,
-                length_penalty=length_penalty,
-                early_stopping=early_stopping,
-                top_p=top_p,
-                top_k=top_k,
-            )
-
-            # decode candidate
-            preds: list = [
-                self.tokenizer.decode(
-                    g,
-                    skip_special_tokens=skip_special_tokens,
-                    clean_up_tokenization_spaces=clean_up_tokenization_spaces,
-                )
-                for g in generated_ids
-            ]
-            candidates.append(preds)
-        return candidates
+        raise NotImplementedError()
 
     def rank(self, candidates: list) -> list:
         """Rank Outputs."""
-        return []
+        return candidates
 
     def censor(self, input_str: str) -> str:
         """Censor Text."""
