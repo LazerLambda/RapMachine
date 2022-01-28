@@ -17,7 +17,7 @@ Authors:
 
 
 from dotenv import load_dotenv, find_dotenv
-from RapMachineBackend import RapMachine
+from RapMachineBackendGPT2 import RapMachineGPT2
 from multiprocessing import Process, Queue
 from multiprocessing import shared_memory
 from tweepy.streaming import Stream
@@ -78,7 +78,7 @@ def queuer(q_q_w, q_w_q):
             if 'text' not in data.keys():
                 return super().on_data(raw_data)
             else:
-                user, text = data['user']['screen_name'], data['text']
+                user, text, tweet_id = data['user']['screen_name'], data['text'], data['id']
 
                 text = re.sub(r'(\s*@RapMachine7\s*)', '', text)
                 logging.info(
@@ -93,7 +93,7 @@ def queuer(q_q_w, q_w_q):
                 global WORKER
                 if WORKER:
                     WORKER = False
-                    q_q_w.put((user, text))
+                    q_q_w.put((user, text,tweet_id))
 
                 else:
                     if not q_w_q.empty():
@@ -108,7 +108,10 @@ def queuer(q_q_w, q_w_q):
                             msg: str = RapMachine(
                                 MODEL_STR).working_msg(user)
                             logging.info(('Worker unavailable: ' + str(msg)))
-                            api.update_status(msg)
+                            api.update_status(
+                                msg,
+                                in_reply_to_status_id=tweet_id,
+                                auto_populate_reply_metadata=True)
                         except Exception as e:
                             logging.error(e)
 
@@ -142,23 +145,25 @@ def worker(q_q_w, q_w_q):
     """Handle language generation."""
     while True:
         if not q_q_w.empty():
-            user, text = q_q_w.get()
+            user, text, tweet_id = q_q_w.get()
 
-            rmb: RapMachine = RapMachine(
+            rmb: RapMachine = RapMachineGPT2(
                 MODEL_STR)
             rmb.load()
             logging.info('load backend')
+            input_str: str = '@' + user + " " + text 
             generated = rmb.generate(
-                ['compton', 'luck', 'gangsta', 'car', 'police', 'apple'], 4)
+                input_str, 4)
 
             # TODO
             # ranked: list = self.rmb.rank(generated)
-            # censored: str = self.rmb.censor(ranked)
-
-            censored = 'TEST-OUTPUT'
+            censored: str = self.rmb.censor(ranked[0])
 
             try:
-                api.update_status(censored)
+                api.update_status(
+                    censored,
+                    in_reply_to_status_id=tweet_id,
+                    auto_populate_reply_metadata=True)
             except Exception as e:
                 logging.error(e)
             q_w_q.put('DONE')

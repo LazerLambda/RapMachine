@@ -21,7 +21,7 @@ import transformers
 ERROR: str = "ERROR:\n\t-> %s."
 
 
-class RapMachine(RMB):
+class RapMachineT5(RMB):
     """Rap Machine Class."""
 
     WORKING: str = "@%s: %s - still workin' hard."

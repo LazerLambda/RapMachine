@@ -10,7 +10,7 @@ Authors:
 
 2022
 """
-from .RapMachineBackendBase import RapMachineBase as RMB
+from RapMachineBackendBase import RapMachineBase as RMB
 
 import datetime
 import os
@@ -21,7 +21,7 @@ import transformers
 ERROR: str = "ERROR:\n\t-> %s."
 
 
-class RapMachine(RMB):
+class RapMachineGPT2(RMB):
     """Rap Machine Class."""
 
     WORKING: str = "@%s: %s - still workin' hard."
@@ -43,7 +43,7 @@ class RapMachine(RMB):
             self,
             input_data: str,
             amount: int,
-            max_length: int = 512,
+            max_length: int = 280,
             min_length: int = 0,
             num_beams: int = 2,
             top_k: int = 100,
