@@ -8,18 +8,19 @@
 
 ## Installation
 
-- Create an `.env` file including the variables:
-    - `CONSUMER_API_KEY`
-    - `CONSUMER_API_KEY_SECRET`
-    - `ACCESS_TOKEN`
-    - `ACCESS_TOKEN_SECRET`
-    and provide the needed credentials to each variable.
 - Install requirements `pip install -r requirements.txt`
+- Alternatively run `./install.sh`
 
 
 ## Prerequisites
 
 - Apply for a [Twitter Developer Account with elevated access](https://developer.twitter.com/en)
+- Create an `.env` file including the variables:
+    - `CONSUMER_API_KEY`
+    - `CONSUMER_API_KEY_SECRET`
+    - `ACCESS_TOKEN`
+    - `ACCESS_TOKEN_SECRET`
+    and provide the necessary credentials to each variable.
 - Download [fasttext's language identification model](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin) and 
   place it in the same folder as this file.
 - Create a folder called `.model` in the same folder as this file and place the proper finetuned GPT-2 model inside it 
