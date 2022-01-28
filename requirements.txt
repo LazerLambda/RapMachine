@@ -4,7 +4,9 @@ fasttext
 torch
 langid
 numpy
+pandas
 nltk
+scrapy
 sklearn
 spacy
 tweepy

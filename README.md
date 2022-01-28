@@ -2,7 +2,8 @@
 
 ## Use
 
- - Run `python BotScript.py`
+ - Run `python BotScript.py` for the Tweetbot
+ - Run `python src/test_generation.py` with proper parameters to test language generation. 
 
 
 ## Installation
