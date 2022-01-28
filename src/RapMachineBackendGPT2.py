@@ -1,4 +1,4 @@
-"""Main Class for RapMachine.
+"""GPT2 Class for RapMachine.
 
 Artificial Creativity
 CIS - LMU Munich

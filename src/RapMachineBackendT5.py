@@ -1,4 +1,4 @@
-"""Main Class for RapMachine.
+"""T5 Class for RapMachine.
 
 Artificial Creativity
 CIS - LMU Munich
