@@ -7,7 +7,7 @@ import re
 
 
 def load_slur_list(filename):
-    """Load list with ioffensive words.
+    """Load list with offensive words.
 
     Args:
         filename (str): filename of text file with offensive words
