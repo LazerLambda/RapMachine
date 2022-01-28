@@ -1,3 +1,21 @@
+#!/usr/bin/python3
+"""Twitter-Bot Script.
+
+Includes multiprocessing to handle
+different twets while computing.
+
+Artificial Creativity
+CIS - LMU Munich
+Philipp Wicke, PhD
+
+Authors:
+    Miha Kacicnik
+    Philipp Koch
+
+2022
+"""
+
+
 from dotenv import load_dotenv, find_dotenv
 from RapMachineBackend import RapMachine
 from multiprocessing import Process, Queue
@@ -13,9 +31,13 @@ import sys
 import time
 import tweepy
 
+logging.basicConfig(filename='BotScript.log', level=logging.INFO)
 
+MODEL_STR: str =\
+    '/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-1'
+
+# Load Credentials
 load_dotenv(find_dotenv())
-
 CONSUMER_API_KEY: str = os.environ.get(
     "CONSUMER_API_KEY", None)
 CONSUMER_API_KEY_SECRET: str = os.environ.get(
@@ -25,14 +47,24 @@ ACCESS_TOKEN: str = os.environ.get(
 ACCESS_TOKEN_SECRET: str = os.environ.get(
     "ACCESS_TOKEN_SECRET", None)
 
-authenticator = tweepy.OAuth1UserHandler(CONSUMER_API_KEY, CONSUMER_API_KEY_SECRET)
-authenticator.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-api = tweepy.API(authenticator, wait_on_rate_limit=True)
+# Connect to Twitter API
+authenticator = tweepy.OAuth1UserHandler(
+    CONSUMER_API_KEY,
+    CONSUMER_API_KEY_SECRET)
+authenticator.set_access_token(
+    ACCESS_TOKEN,
+    ACCESS_TOKEN_SECRET)
+api = tweepy.API(
+    authenticator,
+    wait_on_rate_limit=True)
 
 fmodel = fasttext.load_model('lid.176.bin')
 
+
 def queuer(q_q_w, q_w_q):
-    a = True
+    """Stream tweets and transfer to worker."""
+    global WORKER
+    WORKER = True  # Worker variable
 
     class CustomStream(Stream):
 
@@ -40,7 +72,7 @@ def queuer(q_q_w, q_w_q):
             super().__init__(cap, caps, at, ats)
 
         def on_data(self, raw_data):
-            # logging.info('Tweet got captured.')
+            logging.info('Tweet detected.')
             data: dict = json.loads(raw_data)
 
             if 'text' not in data.keys():
@@ -49,7 +81,8 @@ def queuer(q_q_w, q_w_q):
                 user, text = data['user']['screen_name'], data['text']
 
                 text = re.sub(r'(\s*@RapMachine7\s*)', '', text)
-                logging.info('Received a tweet: ', str(user), str(text))
+                logging.info(
+                    ('Received a tweet: ' + str(user) + " " + str(text)))
                 print('RECEIVED:', str(text))
 
                 res = fmodel.predict(text)[0][0]
@@ -57,28 +90,30 @@ def queuer(q_q_w, q_w_q):
                     return super().on_data(raw_data)
 
                 # Check if worker is available
-                global a
-                if a:
-                    a = False
+                global WORKER
+                if WORKER:
+                    WORKER = False
                     q_q_w.put((user, text))
-                    
+
                 else:
                     if not q_w_q.empty():
                         if q_w_q.get() == 'DONE':
-                            a = True
-                            print("Freeing a")
+                            WORKER = True
                         else:
-                            raise Exception("ERROR:\n\t'-> This state mustn't be reached. queue non empty and state-variable True")
+                            raise Exception((
+                                "ERROR:\n\t'-> This state mustn't be reached."
+                                "queue non empty and state-variable True"))
                     else:
                         try:
-                            msg: str = RapMachine('/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-1').working_msg(user)
-                            logging.info('Worker unavailable: ', str(msg))
+                            msg: str = RapMachine(
+                                MODEL_STR).working_msg(user)
+                            logging.info(('Worker unavailable: ' + str(msg)))
                             api.update_status(msg)
                         except Exception as e:
                             logging.error(e)
 
                 return super().on_data(raw_data)
-    
+
     # Init Listener
     listener = CustomStream(
             CONSUMER_API_KEY,
@@ -100,18 +135,21 @@ def queuer(q_q_w, q_w_q):
             listener.filter(track=['RapMachine7'])
         except Exception as e:
             exp_counter = 1
-            logging.error(ERROR % "Trying to reconnect...")
-    
-def worker(q_q_w, q_w_q):  
+            logging.error((ERROR % "Trying to reconnect..."))
+
+
+def worker(q_q_w, q_w_q):
+    """Handle language generation."""
     while True:
         if not q_q_w.empty():
             user, text = q_q_w.get()
-            
+
             rmb: RapMachine = RapMachine(
-                '/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-1')
+                MODEL_STR)
             rmb.load()
             logging.info('load backend')
-            generated = rmb.generate(['compton', 'luck', 'gangsta', 'car', 'police', 'apple'], 4)
+            generated = rmb.generate(
+                ['compton', 'luck', 'gangsta', 'car', 'police', 'apple'], 4)
 
             # TODO
             # ranked: list = self.rmb.rank(generated)
@@ -127,7 +165,6 @@ def worker(q_q_w, q_w_q):
         else:
             print("Waiting for tweets.")
             time.sleep(1)
-
 
 
 if __name__ == '__main__':

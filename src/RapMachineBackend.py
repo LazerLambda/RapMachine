@@ -11,7 +11,9 @@ Authors:
 2022
 """
 
+import datetime
 import os
+import time
 import torch
 import transformers
 
@@ -22,6 +24,8 @@ class RapMachine:
     """Rap Machine Class."""
 
     model: any = None
+
+    WORKING: str = "@%s: %s - still workin' hard."
 
     def __init__(
             self,
@@ -35,6 +39,9 @@ class RapMachine:
         self.model_path: str = model_path
 
         self.generator: transformers.Pipeline = None
+        # TODO update to argument
+        self.slur_list: list = self.load_slur_list("OffWords.txt")
+        self.slur_dict: dict = self.build_slur_dict(self.slur_list)
         pass
 
     def load(self, **args) -> None:
@@ -45,6 +52,68 @@ class RapMachine:
         self.model: transformers.T5ForConditionalGeneration =\
             transformers.T5ForConditionalGeneration.from_pretrained(
                 self.model_path)
+
+    def working_msg(self, user: str) -> str:
+        cr_time: str = str(datetime.datetime.now().time())
+        return self.WORKING % (user, str(cr_time[0:5]))
+
+
+    @staticmethod
+    def preprocess(inputstr) -> str:
+        # remove RT: @...:
+
+        regex_rt = r"^(RT @[A-Za-z0-7]+:)(.*)$"
+        if bool(re.match(regex_rt, inputstr)):
+            ouput = inputstr
+            try:
+                match = re.search(regex_rt, inputstr)
+                output = match.group(2)
+            except:
+                pass
+            return output
+        else:
+            return inputstr
+        
+    @staticmethod
+    def load_slur_list(filename):
+        """Load list with ioffensive words.
+        Args:
+            filename (str): filename of text file with offensive words
+        Returns:
+            list: list of offensive words
+        """
+        with open(filename, "r") as slur_list:
+            output = slur_list.read()
+        
+        return output.split()
+
+    @staticmethod
+    def build_slur_dict(slur_list):
+        """Map offensive words to [CENSORED] token.
+        Args:
+            slur_list (list): list of offensive words
+        Returns:
+            dict: dictionary -> {'offensive word': '[CENSORED]'}
+        """
+        slur_dict = {}
+        for slur in slur_list:
+            slur_dict[slur] = "[CENSORED]"
+
+        return slur_dict
+
+    @staticmethod
+    def censor_data(input_str, slur_dict):
+        """Apply censorship to string.
+        Args:
+            input_str (str): string that has to be censored
+            slur_dict (dict): dictionary -> {'offensive word': '[CENSORED]'}
+        Returns:
+            [type]: [description]
+        """
+        # replace offensive words in string with values from dictionary
+        # while splitting the string at non alphanumeric tokens
+        censored_song = ''.join(slur_dict.get(word.lower(), word) for word in re.split('(\W+)', input_str))
+        return censored_song
 
     def generate(
             self,
@@ -132,6 +201,6 @@ class RapMachine:
         """Rank Outputs."""
         return []
 
-    def censor(self, input: str) -> str:
+    def censor(self, input_str: str) -> str:
         """Censor Text."""
-        return ''
+        return self.censor_data(input_str, self.slur_dict)
