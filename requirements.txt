@@ -1,5 +1,6 @@
 transformers
 datasets
+fasttext
 torch
 langid
 numpy
