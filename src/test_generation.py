@@ -1,4 +1,15 @@
-"""Test-script for tweet generation."""
+"""Test-script for tweet generation.
+
+Artificial Creativity
+CIS - LMU Munich
+Philipp Wicke, PhD
+
+Authors:
+    Miha Kacicnik
+    Philipp Koch
+
+2022
+"""
 
 import argparse
 import re
