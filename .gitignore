@@ -10,6 +10,6 @@ __pycache__/*
 *.bin
 *.secret
 *.model
-*.log
+*.api
 *.env
-.*
+*.
