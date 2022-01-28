@@ -10,32 +10,21 @@ Authors:
 
 2022
 """
+from .RapMachineBackendBase import RapMachineBase as RMB
 
+import datetime
 import os
+import time
 import torch
 import transformers
 
 ERROR: str = "ERROR:\n\t-> %s."
 
 
-class RapMachine:
+class RapMachineT5(RMB):
     """Rap Machine Class."""
 
-    model: any = None
-
-    def __init__(
-            self,
-            model_path: str):
-        """Initialize Class."""
-        assert isinstance(model_path, str),\
-            ERROR % "'model_path' must be a string"
-        assert os.path.isdir(model_path),\
-            ERROR % f"'{model_path}' is no valid model path."
-
-        self.model_path: str = model_path
-
-        self.generator: transformers.Pipeline = None
-        pass
+    WORKING: str = "@%s: %s - still workin' hard."
 
     def load(self, **args) -> None:
         """Load Model and Tokenizer."""
@@ -46,16 +35,20 @@ class RapMachine:
             transformers.T5ForConditionalGeneration.from_pretrained(
                 self.model_path)
 
+    def working_msg(self, user: str) -> str:
+        cr_time: str = str(datetime.datetime.now().time())
+        return self.WORKING % (user, str(cr_time[0:5]))
+
     def generate(
             self,
-            keywords: list,
+            input_data: list,
             amount: int,
             max_length: int = 512,
             min_length: int = 0,
             num_beams: int = 2,
             top_k: int = 100,
             top_p: float = 0.95,
-            do_sample: bool = True,
+            do_sample: bool = False,
             repetition_penalty: float = 2.5,
             length_penalty: float = 1.0,
             early_stopping: bool = True,
@@ -64,9 +57,22 @@ class RapMachine:
         """Generate Samples.
 
         # TODO Documentation
-        Params
-        ------
-        # TODO
+        Args
+            keywords (list): list of tokens from which a
+                rap is to be generated
+            amount (int): number determining how many
+                candidates will be generated
+            max_length (int): maximal length for candidates
+            min_length (int): minimal length for candidates
+            num_beams (int): length of beam when using beam search
+            top_k (int): top k tokens used in top-k sampling
+                (https://arxiv.org/pdf/1904.09751.pdf)
+            top_p (float): in [0,1], determining the probability
+                mass for top p tokens
+            do_sample (bool): deactivate top-k and sample
+                from distribution
+            repetition_penalty (float): 
+            # TODO
 
         Returns
         -------
@@ -79,7 +85,7 @@ class RapMachine:
         else:
             device = torch.device("cpu")
 
-        keywords_str: str = " ".join(map(str, keywords))
+        keywords_str: str = " ".join(map(str, input_data))
 
         candidates: list = []
         for i in range(amount):
@@ -111,14 +117,6 @@ class RapMachine:
                     clean_up_tokenization_spaces=clean_up_tokenization_spaces,
                 )
                 for g in generated_ids
-            ]
+            ][0]
             candidates.append(preds)
         return candidates
-
-    def rank(self, candidates: list) -> list:
-        """Rank Outputs."""
-        return []
-
-    def censor(self, input: str) -> str:
-        """Censor Text."""
-        return ''

@@ -1,3 +1,6 @@
+transformers
+datasets
+torch
 langid
 numpy
 sklearn
