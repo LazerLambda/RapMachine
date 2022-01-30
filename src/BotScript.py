@@ -36,7 +36,7 @@ logging.basicConfig(filename='BotScript.log', level=logging.INFO)
 MODEL_STR: str = '.model/GPT2-2Ep'
 SLURLIST_STR: str = 'OffWords.txt'
 DONE: str = 'DONE'
-TWITTER_NAME: str = 'PhilippKoch15'
+TWITTER_NAME: str = 'RapMachine7'
 
 # Load Credentials
 load_dotenv(find_dotenv())

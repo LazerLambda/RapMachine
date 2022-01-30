@@ -180,4 +180,7 @@ class RapMachineBase:
 
     def censor(self, input_str: str) -> str:
         """Censor Text."""
-        return self.censor_data(input_str, self.slur_dict)
+        text: str = self.censor_data(input_str, self.slur_dict)
+        if '.' in text:
+            text = text.split('.')[0] + '.'
+        return text
