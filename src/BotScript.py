@@ -144,7 +144,7 @@ def queuer(q_q_w, q_w_q):
             time.sleep(exp_counter)
             exp_counter = exp_counter ** 2
         try:
-            # DO NOT CHANGE TRACK, OTHERWISE SPAM HAPPENS
+            # DO NOT CHANGE TRACK, OTHERWISE SPAM WILL HAPPEN
             listener.filter(track=[TWITTER_NAME])
         except Exception as e:
             exp_counter = 1
