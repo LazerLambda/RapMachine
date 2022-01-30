@@ -9,5 +9,5 @@ nltk
 Scrapy==2.5.1
 sklearn
 spacy
-tweepy
+tweepy==4.5.0
 python-dotenv
