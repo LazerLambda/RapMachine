@@ -34,7 +34,8 @@ import tweepy
 logging.basicConfig(filename='BotScript.log', level=logging.INFO)
 
 MODEL_STR: str =\
-    '/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-1'
+    '.model/GPT2-2Ep'
+SLURLIST_PATH: str = 'OffWords.txt'
 
 # Load Credentials
 load_dotenv(find_dotenv())
@@ -151,7 +152,8 @@ def worker(q_q_w, q_w_q):
             user, text, tweet_id = q_q_w.get()
 
             rmb: RapMachine = RapMachineGPT2(
-                MODEL_STR)
+                MODEL_STR,
+                SLURLIST_PATH)
             rmb.load()
             logging.info('load backend')
             input_str: str = '@' + user + " " + text
