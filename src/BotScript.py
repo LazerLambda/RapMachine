@@ -33,8 +33,10 @@ import tweepy
 
 logging.basicConfig(filename='BotScript.log', level=logging.INFO)
 
-MODEL_STR: str =\
-    '/home/philko/Documents/Uni/WiSe2122/CL/KuenstKrea/RapMachine/.model/T5-1'
+MODEL_STR: str = '.model/GPT2-2Ep'
+SLURLIST_STR: str = 'OffWords.txt'
+DONE: str = 'DONE'
+TWITTER_NAME: str = 'PhilippKoch15'
 
 # Load Credentials
 load_dotenv(find_dotenv())
@@ -83,13 +85,18 @@ def queuer(q_q_w, q_w_q):
                     data['text'],
                     data['id'])
 
-                text = re.sub(r'(\s*@RapMachine7\s*)', '', text)
+                text = re.sub(r'(\s*@' + TWITTER_NAME + '\s*)', '', text)
                 logging.info(
                     ('Received a tweet: ' + str(user) + " " + str(text)))
                 print('RECEIVED:', str(text))
 
                 res = fmodel.predict(text)[0][0]
                 if res != '__label__en':
+                    print('Tweet not english')
+                    api.update_status(
+                        ('@' + str(user) + ' Tweet must be in english.'),
+                        in_reply_to_status_id=tweet_id,
+                        auto_populate_reply_metadata=True)
                     return super().on_data(raw_data)
 
                 # Check if worker is available
@@ -100,7 +107,7 @@ def queuer(q_q_w, q_w_q):
 
                 else:
                     if not q_w_q.empty():
-                        if q_w_q.get() == 'DONE':
+                        if q_w_q.get() == DONE:
                             WORKER = True
                         else:
                             raise Exception((
@@ -138,7 +145,7 @@ def queuer(q_q_w, q_w_q):
             exp_counter = exp_counter ** 2
         try:
             # DO NOT CHANGE TRACK, OTHERWISE SPAM HAPPENS
-            listener.filter(track=['RapMachine7'])
+            listener.filter(track=[TWITTER_NAME])
         except Exception as e:
             exp_counter = 1
             logging.error((ERROR % "Trying to reconnect..."))
@@ -151,7 +158,8 @@ def worker(q_q_w, q_w_q):
             user, text, tweet_id = q_q_w.get()
 
             rmb: RapMachine = RapMachineGPT2(
-                MODEL_STR)
+                MODEL_STR,
+                SLURLIST_STR)
             rmb.load()
             logging.info('load backend')
             input_str: str = '@' + user + " " + text
@@ -159,9 +167,10 @@ def worker(q_q_w, q_w_q):
                 input_str, 4)
 
             # TODO
-            # ranked: list = self.rmb.rank(generated)
-            censored: str = self.rmb.censor(ranked[0])
+            ranked: list = rmb.rank(generated)
+            censored: str = rmb.censor(ranked[0])
 
+            logging.info('About to send: ' + censored)
             try:
                 api.update_status(
                     censored,
@@ -169,9 +178,8 @@ def worker(q_q_w, q_w_q):
                     auto_populate_reply_metadata=True)
             except Exception as e:
                 logging.error(e)
-            q_w_q.put('DONE')
+            q_w_q.put(DONE)
         else:
-            print("Waiting for tweets.")
             time.sleep(1)
 
 
