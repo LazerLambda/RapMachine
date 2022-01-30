@@ -19,7 +19,6 @@ Authors:
 from dotenv import load_dotenv, find_dotenv
 from RapMachineBackendGPT2 import RapMachineGPT2
 from multiprocessing import Process, Queue
-from multiprocessing import shared_memory
 from tweepy.streaming import Stream
 
 import fasttext
