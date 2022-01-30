@@ -34,3 +34,4 @@
   (GeniusLyrics and GetRankings repos) while genius.com and ohhla.com were scraped using a specifically tailored scrapy scraper.
   In total we gathered ~70k raps which we used for finetuning. GPT-2 was finetuned by creating one large text, while T5 was finetuned
   on prompts. The prompts had the form of `KEYWORDS: <keywords> RAP-LYRICS: <rap text>` which proved to be insufficient for our task.
+  Eventually we chosed to use the fine-tuned GPT2 model.
