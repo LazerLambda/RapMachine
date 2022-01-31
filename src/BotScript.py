@@ -32,7 +32,7 @@ import tweepy
 
 logging.basicConfig(filename='BotScript.log', level=logging.INFO)
 
-MODEL_STR: str = '.model/GPT2-2Ep'
+MODEL_STR: str = '.model/GPT2-rap-recommended'
 SLURLIST_STR: str = 'OffWords.txt'
 DONE: str = 'DONE'
 TWITTER_NAME: str = 'RapMachine7'
