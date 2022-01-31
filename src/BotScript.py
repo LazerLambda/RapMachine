@@ -94,7 +94,7 @@ def queuer(q_q_w, q_w_q):
                     print('Tweet not english')
                     api.update_status(
                         ('@' + str(user) + ' Tweet must be in english.'),
-                        in_reply_to_status_id=tweet_id,
+                        in_reply_to_status_id=str(tweet_id),
                         auto_populate_reply_metadata=True)
                     return super().on_data(raw_data)
 
@@ -119,7 +119,7 @@ def queuer(q_q_w, q_w_q):
                             logging.info(('Worker unavailable: ' + str(msg)))
                             api.update_status(
                                 msg,
-                                in_reply_to_status_id=tweet_id,
+                                in_reply_to_status_id=str(tweet_id),
                                 auto_populate_reply_metadata=True)
                         except Exception as e:
                             logging.error(e)
@@ -173,7 +173,7 @@ def worker(q_q_w, q_w_q):
             try:
                 api.update_status(
                     censored,
-                    in_reply_to_status_id=tweet_id,
+                    in_reply_to_status_id=str(tweet_id),
                     auto_populate_reply_metadata=True)
             except Exception as e:
                 logging.error(e)
