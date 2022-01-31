@@ -31,7 +31,6 @@ class RapMachineBase:
     def __init__(
             self,
             model_path: str,
-            ranker_path: str,
             slurlist_path: str):
         """Initialize Class."""
         assert isinstance(model_path, str),\
@@ -41,8 +40,6 @@ class RapMachineBase:
 
         self.model_path: str = model_path
         
-        self.ranker_path: str = ranker_path
-
         self.generator: transformers.Pipeline = None
 
         self.slur_list: list = self.load_slur_list(slurlist_path)
@@ -179,17 +176,18 @@ class RapMachineBase:
 
     def rank(self, candidates: list) -> list:
         """Rank Outputs."""
-        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-        model = torch.load(self.ranker_path) 
-        tokenizer = transformers.RobertaTokenizer.from_pretrained('roberta-base')
-        data = tokenizer(candidates, padding=True, truncation=True, return_tensors = 'pt')
+        # device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        # model = torch.load('.model/roberta_ranker.pth') 
+        # tokenizer = transformers.RobertaTokenizer.from_pretrained('roberta-base')
+        # data = tokenizer(candidates, padding=True, truncation=True, return_tensors = 'pt')
 
-        ids = data['input_ids'].to(device)
-        masks = data['attention_mask'].to(device)
+        # ids = data['input_ids'].to(device)
+        # masks = data['attention_mask'].to(device)
 
-        output = model(ids, masks)
+        # output = model(ids, masks)
         
-        return output
+        # return output
+        return candidates
 
     def censor(self, input_str: str) -> str:
         """Censor Text."""
