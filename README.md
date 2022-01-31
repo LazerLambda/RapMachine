@@ -35,7 +35,8 @@
   (GeniusLyrics and GetRankings repos) while genius.com and ohhla.com were scraped using a specifically tailored scrapy scraper.
   In total we gathered ~70k raps which we used for finetuning. GPT-2 was finetuned by creating one large text, while T5 was finetuned
   on prompts. The prompts had the form of `KEYWORDS: <keywords> RAP-LYRICS: <rap text>` which proved to be insufficient for our task.
-  Eventually we chosed to use the fine-tuned GPT2 model.
+  Eventually we chosed to use the fine-tuned GPT2 model. Experimental and succeeding scripts can be found in `./preprocessing/finetunging`. A short description can be
+  found [here](https://github.com/LazerLambda/RapMachine/blob/master/preprocessing/DATADOC.md)
 
 ## Models
  - GPT2-rap-recommended [Download](https://drive.google.com/drive/folders/1zl_Zn7hUzsnr7FpdtV9VBo3SmmvM4jQO?usp=sharing) (Necessary to use BotScript.py)
