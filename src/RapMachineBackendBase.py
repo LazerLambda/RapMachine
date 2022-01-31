@@ -31,6 +31,7 @@ class RapMachineBase:
     def __init__(
             self,
             model_path: str,
+            ranker_path: str,
             slurlist_path: str):
         """Initialize Class."""
         assert isinstance(model_path, str),\
@@ -39,6 +40,8 @@ class RapMachineBase:
             ERROR % f"'{model_path}' is no valid model path."
 
         self.model_path: str = model_path
+        
+        self.ranker_path: str = ranker_path
 
         self.generator: transformers.Pipeline = None
 
@@ -176,7 +179,17 @@ class RapMachineBase:
 
     def rank(self, candidates: list) -> list:
         """Rank Outputs."""
-        return candidates
+        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        model = torch.load(self.ranker_path) 
+        tokenizer = transformers.RobertaTokenizer.from_pretrained('roberta-base')
+        data = tokenizer(candidates, padding=True, truncation=True, return_tensors = 'pt')
+
+        ids = data['input_ids'].to(device)
+        masks = data['attention_mask'].to(device)
+
+        output = model(ids, masks)
+        
+        return output
 
     def censor(self, input_str: str) -> str:
         """Censor Text."""
