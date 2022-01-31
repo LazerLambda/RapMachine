@@ -36,11 +36,13 @@
   In total we gathered ~70k raps which we used for finetuning. GPT-2 was finetuned by creating one large text, while T5 was finetuned
   on prompts. The prompts had the form of `KEYWORDS: <keywords> RAP-LYRICS: <rap text>` which proved to be insufficient for our task.
   Eventually we chosed to use the fine-tuned GPT2 model. Experimental and succeeding scripts can be found in `./preprocessing/finetunging`.
+  Additionaly, a RoBERTa model was finetuned on both data from the english wikipedia, tweets regarding hate speech, the CNN/Dailymail dataset 
+  and 4k rap lyrics data (data can be found under `Data`) to classify the quality of the generated raps.
 
 ### `preprocessing`
  - `finetuning`
     - `FineTuneRapMachineExp.ipynb` Experimental script
-    - `FineTuneRapMachineGPT2.ipynb` GPT2 fintuning script
+    - `FineTuneRapMachineGPT2.ipynb` GPT2 finetuning script
     - `T5.ipynb` Finetuning Script for T5 on a key2text approach
     - `keytotext.ipynb` Using the keytotext library for finetuning
     - `FineTuneRapMachineExp2.ipynb` Another experimental script, in which GPT-J and GPT-NEO were used, yet didn't succeed
@@ -50,9 +52,11 @@
  - `lyrics_spider`
     - Includes scrapy program to obtain lyrics
  - `cleaning_and_keywords`
-    - TODO
+    - `data_cleaner` Script for removing noise from 70k scraped rap corpus
+    - `kw_extraction` Script that starts building a TF-IDF model either from scratch or from an existing model to generate keywords for rap corpus
+    - `tf_idf` TF-IDF model script
  - `ranker`
-    - TODO
+    - `roberta_ranker.ipynb` Roberta finetuning script
 
 ### Sources
  - ohhla.com - Scraped 
@@ -69,9 +73,10 @@
 ## Models
  - GPT2-rap-recommended [Download](https://drive.google.com/drive/folders/1zl_Zn7hUzsnr7FpdtV9VBo3SmmvM4jQO?usp=sharing) (Necessary to use BotScript.py)
  - GPT2-small-key2text [Download](https://drive.google.com/drive/folders/1FOrFDQgpnnBcSbXfGsBG2RkrjzggEaqx?usp=sharing) (Approach did not work out, trained on 4k corpus)
+ - Roberta Ranker [Download](https://drive.google.com/drive/folders/1IztahoA0rfnHZ4dkHIZ46f-Sh1sqxr2e?usp=sharing) (Ranker trained on 8k data with 4k rap corpus and 4k non-rap corpus)
  - T5-large-key2text [Download](https://drive.google.com/drive/folders/1dIsp7LmHwRXng8GX2fs__4JYrjpk-W4D?usp=sharing) (Approach did not work out, trained on 70k corpus)
  - T5-small-key2text [Download](https://drive.google.com/drive/folders/1KyxvhLMDG2z1gCQ9aCSm4TmIL5CXq8Nz?usp=sharing) (Approach did not work out, trained on 4k corpus)
- - tf-idf pickle [Download](https://drive.google.com/drive/folders/1R8HYgaADOhOQ2BdAMEsLryA2XqUxLTMm?usp=sharing)
+ - tf-idf pickle [Download](https://drive.google.com/drive/folders/1R8HYgaADOhOQ2BdAMEsLryA2XqUxLTMm?usp=sharing) (Approach did not work out, trained on 70k corpus)
 
 ## Data
  - Our data can be downloaded [here](https://drive.google.com/drive/folders/1XJ-tnf0VgORbo7qS3rHaXVjsX01nFKuT?usp=sharing)
