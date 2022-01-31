@@ -51,6 +51,8 @@
     - Includes scrapy program to obtain lyrics
  - `cleaning_and_keywords`
     - TODO
+ - `ranker`
+    - TODO
 
 ### Sources
  - ohhla.com - Scraped 
