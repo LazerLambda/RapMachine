@@ -64,6 +64,6 @@
 
 ## Models
  - GPT2-rap-recommended [Download](https://drive.google.com/drive/folders/1zl_Zn7hUzsnr7FpdtV9VBo3SmmvM4jQO?usp=sharing) (Necessary to use BotScript.py)
- - GPT2-small-key2text [Download](https://drive.google.com/drive/folders/1FOrFDQgpnnBcSbXfGsBG2RkrjzggEaqx?usp=sharing) (Approach did not work, trained on 4k corpus)
- - T5-large-key2text [Download](https://drive.google.com/drive/folders/1dIsp7LmHwRXng8GX2fs__4JYrjpk-W4D?usp=sharing) (Approach did not work, trained on 70k corpus)
- - T5-small-key2text [Download](https://drive.google.com/drive/folders/1KyxvhLMDG2z1gCQ9aCSm4TmIL5CXq8Nz?usp=sharing) (Approach did not work, trained on 4k corpus)
+ - GPT2-small-key2text [Download](https://drive.google.com/drive/folders/1FOrFDQgpnnBcSbXfGsBG2RkrjzggEaqx?usp=sharing) (Approach did not work out, trained on 4k corpus)
+ - T5-large-key2text [Download](https://drive.google.com/drive/folders/1dIsp7LmHwRXng8GX2fs__4JYrjpk-W4D?usp=sharing) (Approach did not work out, trained on 70k corpus)
+ - T5-small-key2text [Download](https://drive.google.com/drive/folders/1KyxvhLMDG2z1gCQ9aCSm4TmIL5CXq8Nz?usp=sharing) (Approach did not work out, trained on 4k corpus)
