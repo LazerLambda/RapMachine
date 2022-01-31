@@ -92,8 +92,9 @@ def queuer(q_q_w, q_w_q):
                 res = fmodel.predict(text)[0][0]
                 if res != '__label__en':
                     print('Tweet not english')
+                    logging.info(f"Tweet is not written in english: {str(text)}")
                     api.update_status(
-                        ('@' + str(user) + ' Tweet must be in english.'),
+                        ('@' + str(user) + ' Tweet must be in english. I am sorry :('),
                         in_reply_to_status_id=str(tweet_id),
                         auto_populate_reply_metadata=True)
                     return super().on_data(raw_data)
