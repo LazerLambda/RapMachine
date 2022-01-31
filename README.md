@@ -67,7 +67,7 @@
  - GPT2-small-key2text [Download](https://drive.google.com/drive/folders/1FOrFDQgpnnBcSbXfGsBG2RkrjzggEaqx?usp=sharing) (Approach did not work out, trained on 4k corpus)
  - T5-large-key2text [Download](https://drive.google.com/drive/folders/1dIsp7LmHwRXng8GX2fs__4JYrjpk-W4D?usp=sharing) (Approach did not work out, trained on 70k corpus)
  - T5-small-key2text [Download](https://drive.google.com/drive/folders/1KyxvhLMDG2z1gCQ9aCSm4TmIL5CXq8Nz?usp=sharing) (Approach did not work out, trained on 4k corpus)
- - tf-df pickle [Download](https://drive.google.com/drive/folders/1R8HYgaADOhOQ2BdAMEsLryA2XqUxLTMm?usp=sharing)
+ - tf-idf pickle [Download](https://drive.google.com/drive/folders/1R8HYgaADOhOQ2BdAMEsLryA2XqUxLTMm?usp=sharing)
 
 ## Data
  - Our data can be downloaded [here](https://drive.google.com/drive/folders/1XJ-tnf0VgORbo7qS3rHaXVjsX01nFKuT?usp=sharing)
