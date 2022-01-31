@@ -35,8 +35,32 @@
   (GeniusLyrics and GetRankings repos) while genius.com and ohhla.com were scraped using a specifically tailored scrapy scraper.
   In total we gathered ~70k raps which we used for finetuning. GPT-2 was finetuned by creating one large text, while T5 was finetuned
   on prompts. The prompts had the form of `KEYWORDS: <keywords> RAP-LYRICS: <rap text>` which proved to be insufficient for our task.
-  Eventually we chosed to use the fine-tuned GPT2 model. Experimental and succeeding scripts can be found in `./preprocessing/finetunging`. A short description can be
-  found [here](https://github.com/LazerLambda/RapMachine/blob/master/preprocessing/DATADOC.md)
+  Eventually we chosed to use the fine-tuned GPT2 model. Experimental and succeeding scripts can be found in `./preprocessing/finetunging`.
+
+### `preprocessing`
+ - `finetuning`
+    - `FineTuneRapMachineExp.ipynb` Experimental script
+    - `FineTuneRapMachineGPT2.ipynb` GPT2 fintuning script
+    - `T5.ipynb` Finetuning Script for T5 on a key2text approach
+    - `keytotext.ipynb` Using the keytotext library for finetuning
+    - `FineTuneRapMachineExp2.ipynb` Another experimental script, in which GPT-J and GPT-NEO were used, yet didn't succeed
+ - `data_analysis`
+    - `CreateAdvData.ipynb` Script to create balanced dataset to train the ranker model
+    - `LyricsAnalyye.ipzng` Script to analyze the scraped data.
+- `lyrics_spider`
+    - Includes scrapy program to obtain lyrics
+
+### Sources
+ - ohhla.com - Scraped 
+ - BattleRap.com - Scraped 
+ - Genius.com - Accessed through API, [GeniusLyrics](https://github.com/LazerLambda/GeniusLyrics) and [GetRankings](https://github.com/LazerLambda/GetRankings/) used.
+
+### Genius API
+ - To obtain lyrics from genius.com, two programs were implemented which are based on different, yet outdated, repositories.
+    - [GeniusLyrics](https://github.com/LazerLambda/GeniusLyrics)
+    - [GetRankings](https://github.com/LazerLambda/GetRankings)
+ - Both programs are part of this project
+
 
 ## Models
  - GPT2-rap-recommended [Download](https://drive.google.com/drive/folders/1zl_Zn7hUzsnr7FpdtV9VBo3SmmvM4jQO?usp=sharing) (Necessary to use BotScript.py)
