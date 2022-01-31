@@ -4,7 +4,7 @@
 
  - Run `python BotScript.py` for the Tweetbot (This script runs only with `GPT2-rap-recommended`)
  - Run `python src/test_generation.py` with proper parameters to test language generation. 
- - To quit the program use `CTRL` + `C` 
+ - To quit the program, use `CTRL` + `C` 
 
 
 ## Installation
