@@ -47,7 +47,7 @@
  - `data_analysis`
     - `CreateAdvData.ipynb` Script to create balanced dataset to train the ranker model
     - `LyricsAnalyye.ipzng` Script to analyze the scraped data.
-- `lyrics_spider`
+ - `lyrics_spider`
     - Includes scrapy program to obtain lyrics
 
 ### Sources
